@@ -1,4 +1,6 @@
 const router = require('express').Router();
+const bodyParser = require('body-parser');
+router.use(bodyParser.json());
 const { Product, Category, Tag, ProductTag } = require('../../models');
 
 // The `/api/products` endpoint
@@ -60,14 +62,22 @@ Product.findOne({
   // be sure to include its associated Category and Tag data
 });
 
+async function processTags(tagArray){
+  let processed_tagIds;
+  //we need to search tag table for tagArray 
+
+  return processed_tagIds;
+}
 // create new product
-router.post('/', (req, res) => {
-  Product.create({
+router.post('/', async (req, res) => {
+  console.log(req.body);
+   Product.create({
     product_name: req.body.product_name,
     price: req.body.price,
     stock: req.body.stock,
     category_id: req.body.category_id,
-    tagIds: req.body.tagIds
+    tag_id: await processTags(req.body.tag_id)
+    // processTags(req.body.tagIds)
   })
   /* req.body should look like this...
     {
@@ -96,6 +106,7 @@ router.post('/', (req, res) => {
       console.log(err);
       res.status(400).json(err);
     });
+    
 });
 
 // update product
